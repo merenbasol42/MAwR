@@ -3,11 +3,10 @@ class Message:
     def __init__(self):
         self.audio: list[int]
 
-    def add_voice(self, voice: list[int]):
+    def add_part(self, voice: list[int]):
         self.audio.extend(voice)
 
-    def convert(self, piece_len: int) -> list:        
-        #disassembling
+    def diss_assemble(self, piece_len: int) -> list:        
         result = []
         counter = 0
 
