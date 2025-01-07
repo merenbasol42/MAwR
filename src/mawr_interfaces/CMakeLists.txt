@@ -25,7 +25,7 @@ if(BUILD_TESTING)
 endif()
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "srv/Register.srv",
+  "srv/Register.srv"
   "srv/Permission.srv"
 )
 

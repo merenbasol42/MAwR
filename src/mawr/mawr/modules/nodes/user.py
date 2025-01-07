@@ -2,9 +2,10 @@
 import rclpy
 from rclpy.node import Node
 
+from mawr_interfaces.srv import Permission
+
 from ..message import Message
 from ..message import DirectionalMessage as DMsg
-
 
 #
 # Constants
