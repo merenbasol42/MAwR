@@ -31,6 +31,8 @@ class User(Node):
 
         self.create_service(Permission, f"{self.name}/permission", self.__handle_permission)
     
+        self.receiver_sub = None
+
     #
     # ROS Messaging
     # 
@@ -46,6 +48,7 @@ class User(Node):
                     self.receive_flag = False
                     self.receiver_name = None
                     res.success = True
+                    self.__delete_receiver_topic()
         else:
             if req.target:
                 self.get_logger().error(f"Already not receiving from {req.name}")
@@ -63,11 +66,14 @@ class User(Node):
         pass
 
     def __create_receiver_topic(self, postfix: str):
-        self.create_subscription(
+        self.receiver_sub = self.create_subscription(
             ...,
             f"{self.name}/receiver/{postfix}",
             self.__cb_receiver
         )
+
+    def __delete_receiver_topic(self):
+        self.destroy_subscription(self.receiver_sub)
 
     #
     #
