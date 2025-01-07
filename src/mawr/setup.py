@@ -26,6 +26,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            _entry_point("user"),
+            _entry_point("center")
         ],
     },
 )
