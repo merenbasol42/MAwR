@@ -25,6 +25,8 @@ if(BUILD_TESTING)
 endif()
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+  "./msg/Voice.msg"
+
   "srv/Register.srv"
   "srv/Permission.srv"
 )
