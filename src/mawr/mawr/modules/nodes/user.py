@@ -2,6 +2,10 @@
 import rclpy
 from rclpy.node import Node
 
+from ..message import Message
+from ..message import DirectionalMessage as DMsg
+
+
 #
 # Constants
 #
@@ -15,21 +19,33 @@ NODE_NAME_PREFIX: str = "user_"
 class User(Node):
     def __init__(self, id: int):
         self.id : int = id
-        super().__init__(f"{NODE_NAME_PREFIX}{self.id}")
-        self.received: list
-        self.sended: list
+        self.name = f"{NODE_NAME_PREFIX}{self.id}"
+        self.received_msgs: list[DMsg] = []
+        self.recorded_msgs: list[Message] = []
+        
+        super().__init__(self.name)
 
-    def query_message_list(self):
+        self.create_service(..., f"{self.name}/query", self.__handle_query)
+    #
+    # ROS Messaging
+    # 
+
+    def __handle_query(self, res):
         pass
 
-    def send_message(self, index: int, user: str):
+    def __cb_receiver(self, msg):
         pass
 
-    def receive_message(self, index: int):
+    def send_msg(self, index: int):
         pass
 
-    def record_message(self):
+    #
+    #
+    #
+
+    def record_msg(self):
         pass
+
 
 #
 # Entry Point
