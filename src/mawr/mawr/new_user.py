@@ -8,8 +8,8 @@ from rclpy.node import Node
 #
 
 NODE_NAME_PREFIX: str = "new_user"
-RANDOM_RANGE: tuple[int] = (0, 999)
 SRV_NAME_REGISTER: str = "register"
+RANDOM_RANGE: tuple[int] = (0, 999)
 SPIN_TIMEOUT: float = 0.05
 
 #
