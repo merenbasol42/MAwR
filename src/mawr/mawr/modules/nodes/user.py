@@ -2,6 +2,7 @@
 import rclpy
 from rclpy.node import Node
 
+from mawr_interfaces.msg import Voice
 from mawr_interfaces.srv import Permission
 
 from ..message import Message
@@ -59,15 +60,18 @@ class User(Node):
                 self.receiver_name = req.name
                 res.success = True
                 self.__create_receiver_topic()
+                self.received_msgs.append(DMsg())
         
         return res
 
-    def __cb_receiver(self, msg: ...):
-        pass
+    def __cb_receiver(self, msg: Voice):
+        self.received_msgs[-1].add_part(
+            list(msg.data)
+        )
 
     def __create_receiver_topic(self, postfix: str):
         self.receiver_sub = self.create_subscription(
-            ...,
+            Voice,
             f"{self.name}/receiver/{postfix}",
             self.__cb_receiver
         )
