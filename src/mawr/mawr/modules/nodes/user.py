@@ -25,12 +25,12 @@ class User(Node):
         
         super().__init__(self.name)
 
-        self.create_service(..., f"{self.name}/query", self.__handle_query)
+        self.create_service(..., f"{self.name}/permission", self.__handle_permission)
     #
     # ROS Messaging
     # 
 
-    def __handle_query(self, res):
+    def __handle_permission(self, res):
         pass
 
     def __cb_receiver(self, msg):
