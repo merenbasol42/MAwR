@@ -25,7 +25,8 @@ if(BUILD_TESTING)
 endif()
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "srv/Register.srv"
+  "srv/Register.srv",
+  "srv/Permission.srv"
 )
 
 ament_export_dependencies(rosidl_default_runtime)
