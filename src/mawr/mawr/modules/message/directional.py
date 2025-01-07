@@ -1,6 +1,5 @@
 from .message import Message
 
-
 class DirectionalMessage(Message):
     def __init__(self):
         super().__init__()
