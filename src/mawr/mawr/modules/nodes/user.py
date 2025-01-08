@@ -84,16 +84,16 @@ class User(Node):
         else:
 
             if req.target:
-                self.get_logger().error(f"Already not receiving from {req.name}")
-                res.success = False
-            
-            else: 
                 self.get_logger().info(f"Setting up for receive from {req.name}")
                 self.receive_flag = True
                 self.receiver_name = req.name
                 res.success = True
                 self.__create_receiver_sub(req.name)
                 self.received_msgs.append(DMsg(req.name, self.name))
+            
+            else: 
+                self.get_logger().error(f"Already not receiving from {req.name}")
+                res.success = False
         
         return res
 
