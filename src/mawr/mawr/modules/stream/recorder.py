@@ -44,6 +44,9 @@ class Recorder:
             data = stream.read(CHUNK, exception_on_overflow=False)
             # Veriyi kuyruğa ekliyoruz
             self.__make_safe(lambda: self.__queue.put(data[:]))
+        
+        stream.stop_stream()  # Akışı durduruyoruz
+        stream.close()  # Akışı kapatıyoruz
 
     def __make_safe(self, func) -> ...:
         while self.__queue_flag: pass
