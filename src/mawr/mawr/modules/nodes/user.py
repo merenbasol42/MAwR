@@ -40,20 +40,36 @@ class User(Node):
 
     def __handle_permission(self, req: Permission.Request, res: Permission.Response):
         if self.receive_flag:
+        
             if req.name == self.receiver_name:
+        
                 if req.target:
                     self.get_logger().error(f"Already receiving from {req.name}")
                     res.success = False
+                
                 else:
                     self.get_logger().info(f"Receiving from {req.name} has been end")
                     self.receive_flag = False
                     self.receiver_name = None
                     res.success = True
                     self.__delete_receiver_topic()
+
+            else:
+             
+                if req.target:
+                    self.get_logger().warn(f"Receiver is full. So decline {req.name} query")
+                    res.success = False
+                
+                else:
+                    self.get_logger().error(f"Already not receiving from {req.name}. Receiving from another")
+                    res.success = False
+
         else:
+            
             if req.target:
                 self.get_logger().error(f"Already not receiving from {req.name}")
                 res.success = False
+            
             else: 
                 self.get_logger().info(f"Setting up for receive from {req.name}")
                 self.receive_flag = True
