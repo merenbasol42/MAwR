@@ -11,14 +11,14 @@ class User:
         self.gui.init()
 
     def bind(self):
-        def cmd():
-            self.name = self.gui.text_box.get()
-            print(self.name)
-            self.__run_node()
-
-        self.gui.submit_button.configure(
-            command = cmd
+        self.gui.e_name.subscribe(
+            self.__cb_name_entered
         )
+
+    def __cb_name_entered(self, name: str):
+        self.name = name
+        self.__run_node()
+        self.gui.switch_page()
 
     def __run_node(self):
         def node_run():
@@ -31,7 +31,6 @@ class User:
             target = node_run,
             daemon = True
         ).start()
-        
 
     def run(self):
         self.bind()

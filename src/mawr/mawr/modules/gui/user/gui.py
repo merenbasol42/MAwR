@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from .pages import MainPage, RegistirationPage
 
 def def_logger(text: str):
     print(
@@ -9,30 +10,31 @@ class GUI:
     def __init__(self):
         self.wn: ctk.CTk
         self.logger = def_logger
-
-        self.text_box: ctk.CTkEntry
-        self.submit_button: ctk.CTkButton
-        self.record_button: ctk.CTkButton
-        self.play_button: ctk.CTkButton
-    
-    def __init_wn(self):
         self.wn: ctk.CTk = ctk.CTk()
+        self.main_page: MainPage = MainPage(self.wn)
+        self.regi_page: RegistirationPage = RegistirationPage(self.wn)
+    
+        self.e_name = self.regi_page.e_name
+        self.e_record = self.main_page.e_record
+        self.e_play = self.main_page.e_play
+
+    def __init_wn(self):
         self.wn.title = "User" 
         self.wn.geometry("400x400")
 
     def __init_components(self):
         self.logger("components initializing")
-        
-        self.text_box = ctk.CTkEntry(self.wn)
-        self.submit_button = ctk.CTkButton(self.wn, text="submit")
-        
-        self.text_box.grid(row=0, column=0)
-        self.submit_button.grid(row=1, column=0)
-        
-        self.wn.grid_rowconfigure(0, weight=1)
-        self.wn.grid_rowconfigure(0, weight=1)
-        self.wn.grid_columnconfigure(0, weight=1)
+        self.regi_page.create()
+        self.main_page.create()
 
+        self.regi_page.insert()
+        self.main_page.insert()
+
+        self.regi_page.pack(side='top', expand=True, fill='both')
+
+    def switch_page(self):
+        self.regi_page.pack_forget()
+        self.main_page.pack(side='top', expand=True, fill='both')
 
     def init(self):
         self.__init_wn()
