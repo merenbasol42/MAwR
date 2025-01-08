@@ -3,8 +3,6 @@ from threading import Thread
 from .modules.gui.user import GUI
 from .modules.nodes.user import User as Node
 
-import argparse
-
 class User:
     def __init__(self, name: str):
         self.name = name
