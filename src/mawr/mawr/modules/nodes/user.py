@@ -195,7 +195,6 @@ class User(Node):
             )
             self.sender_th.start()
         
-
     def play_msg(self, index: int):
         pass
 
@@ -205,9 +204,8 @@ class User(Node):
 
 def main():
     rclpy.init()
-    node = User()
-    try: rclpy.spin(node)
-    except: pass
+    node = User("__def__")
+    rclpy.spin()
     node.destroy_node()
     rclpy.shutdown()
     

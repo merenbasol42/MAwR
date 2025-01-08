@@ -2,10 +2,10 @@ from setuptools import find_packages, setup
 
 package_name = 'mawr'
 
-def _entry_point(exec_name:str) -> str:
+def _entry_point(exec_name: str) -> str:
     return f"{exec_name} = {package_name}.{exec_name}:main"
 
-def _data_file(to_:list[str], from_:str) -> tuple[str, list[str]]:
+def _data_file(to_: list[str], from_: str) -> tuple[str, list[str]]:
     return (to_, from_)
 
 setup(
@@ -13,8 +13,7 @@ setup(
     version='0.0.0',
     packages=find_packages(exclude=['test']),
     data_files=[
-        ('share/ament_index/resource_index/packages',
-            ['resource/' + package_name]),
+        ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
     install_requires=['setuptools'],
