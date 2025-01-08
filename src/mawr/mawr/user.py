@@ -11,20 +11,19 @@ class User:
         self.gui.init()
 
     def bind(self):
-        self.gui.record_button.configure(
-            command = lambda: print("record") 
+        def cmd():
+            self.name = self.gui.text_box.get()
+            print(self.name)
+            self.__run_node()
+
+        self.gui.submit_button.configure(
+            command = cmd
         )
 
-        self.gui.play_button.configure(
-            command = lambda: print("play")
-        )
-
-    def run(self):
-        print(f"my name is {self.name}")
+    def __run_node(self):
         def node_run():
             rclpy.init()
             self.node = Node(self.name)
-            self.bind()
             rclpy.spin(self.node)
             rclpy.shutdown()
         
@@ -33,6 +32,9 @@ class User:
             daemon = True
         ).start()
         
+
+    def run(self):
+        self.bind()
         self.gui.run()
 
 def main(name: str = "ahmed"):

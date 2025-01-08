@@ -10,6 +10,8 @@ class GUI:
         self.wn: ctk.CTk
         self.logger = def_logger
 
+        self.text_box: ctk.CTkEntry
+        self.submit_button: ctk.CTkButton
         self.record_button: ctk.CTkButton
         self.play_button: ctk.CTkButton
     
@@ -20,13 +22,17 @@ class GUI:
 
     def __init_components(self):
         self.logger("components initializing")
-        self.record_button = ctk.CTkButton(self.wn, text="record")
-        self.play_button = ctk.CTkButton(self.wn, text="play")
-        self.record_button.grid(row=0, column=0)
-        self.play_button.grid(row=0, column=1)
+        
+        self.text_box = ctk.CTkEntry(self.wn)
+        self.submit_button = ctk.CTkButton(self.wn, text="submit")
+        
+        self.text_box.grid(row=0, column=0)
+        self.submit_button.grid(row=1, column=0)
+        
+        self.wn.grid_rowconfigure(0, weight=1)
         self.wn.grid_rowconfigure(0, weight=1)
         self.wn.grid_columnconfigure(0, weight=1)
-        self.wn.grid_columnconfigure(1, weight=1)
+
 
     def init(self):
         self.__init_wn()
