@@ -138,19 +138,23 @@ class User(Node):
     def __send(self, index: int, name: str) -> bool:
         success = self.__call_permission(name, True)
         if not success:
-            self.get_logger().error(f"permission denied from {name}")
+            self.get_logger().error(f"... permission denied from {name}")
             self.client_permission.destroy()
             return False
         
         self.__create_receiver_pub(name)
         m = self.recorded_msgs[index]
         l = m.diss_assemble(300)
+        self.get_logger().info(f"... publishing voice start")
         for i in l:
             self.pubber_receiver.publish(
                 Voice(data = i)
             )
             time.sleep(0.05)
-
+        self.get_logger().info(f"... publishing voice end")
+        
+        self.client_permission.destroy()
+        self.client_permission = None
 
     def __sender_work(self):
         while rclpy.ok() and len(self.send_cmds):
