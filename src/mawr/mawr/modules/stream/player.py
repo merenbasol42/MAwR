@@ -12,7 +12,7 @@ class Player:
         self.__queue: Queue | None = None 
         self.logger = def_logger 
 
-    def load(self, audio: list[int]):
+    def load(self, audio: list[list[int]]):
         """Audio listesini kuyruk içerisine ekler."""
         self.__queue = Queue()  # Eğer kuyruk None ise, yeni bir kuyruk oluştur.
 
