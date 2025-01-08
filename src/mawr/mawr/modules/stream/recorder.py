@@ -8,8 +8,11 @@ class Recorder:
         self.__queue_flag: bool = False
         self.__queue: Queue = Queue()
 
-    def get_audio(self) -> list[int]:
-        return list(self.__queue.queue)
+    def get_audio(self) -> list[list[int]]:
+        audio_data = []
+        while not self.__queue.empty():
+            audio_data.append(self.__queue.get())
+        return audio_data
 
     def stop(self):
         self.__record_flag = False
