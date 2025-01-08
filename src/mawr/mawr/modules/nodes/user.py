@@ -8,25 +8,26 @@ from mawr_interfaces.srv import Permission
 from ..message import Message
 from ..message import DirectionalMessage as DMsg
 
+from ..stream import Recorder
+
 #
 # Constants
 #
-
-NODE_NAME_PREFIX: str = "user_"
 
 #
 # Logic
 #
 
 class User(Node):
-    def __init__(self, id: int):
-        self.id : int = id
-        self.name = f"{NODE_NAME_PREFIX}{self.id}"
+    def __init__(self, name: str):
+        self.name = name
         self.received_msgs: list[DMsg] = []
         self.recorded_msgs: list[Message] = []
         
         self.receive_flag: bool = False
         self.receiver_name: str = None
+
+        self.recorder: Recorder = Recorder()
 
         super().__init__(self.name)
 
@@ -99,8 +100,19 @@ class User(Node):
     #
     #
 
-    def record_msg(self):
-        pass
+    def start_record_msg(self):
+        self.recorder.start()
+        self.get_logger().info("recording start")
+
+    def stop_record_msg(self):
+        self.recorder.stop()
+        self.get_logger().info("recording end")
+        m = Message()
+        m.add_part(
+            self.recorder.get_audio()
+        )
+        self.recorded_msgs.append(m)
+        self.get_logger().info("record saved")
 
     def send_msg(self, index: int):
         pass
