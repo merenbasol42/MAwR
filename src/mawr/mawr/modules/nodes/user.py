@@ -21,6 +21,10 @@ from ..stream import Recorder
 #
 
 class SendCommand:
+    '''
+    Gönderilecek olan mesajların emri. 
+    Kime göndereliceği ve hangi mesaj gönderileceğini kapsar
+    '''
     def __init__(self, to: str, index: int):
         self.to: str
         self.index: int
@@ -143,12 +147,11 @@ class User(Node):
             return False
         
         self.__create_receiver_pub(name)
-        m = self.recorded_msgs[index]
-        l = m.diss_assemble(300)
+        
         self.get_logger().info(f"... publishing voice start")
-        for i in l:
+        for part in self.recorded_msgs[index].audio:
             self.pubber_receiver.publish(
-                Voice(data = i)
+                Voice(data = part)
             )
             time.sleep(0.05)
         self.get_logger().info(f"... publishing voice end")
@@ -174,9 +177,7 @@ class User(Node):
         self.recorder.stop()
         self.get_logger().info("recording end")
         m = Message()
-        m.add_part(
-            *self.recorder.get_audio()
-        )
+        m = self.recorder.get_audio()
         self.recorded_msgs.append(m)
         self.get_logger().info("record saved")
 
