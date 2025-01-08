@@ -65,7 +65,7 @@ class User(Node):
                     res.success = False
 
         else:
-            
+
             if req.target:
                 self.get_logger().error(f"Already not receiving from {req.name}")
                 res.success = False
@@ -75,7 +75,7 @@ class User(Node):
                 self.receive_flag = True
                 self.receiver_name = req.name
                 res.success = True
-                self.__create_receiver_topic()
+                self.__create_receiver_topic(req.name)
                 self.received_msgs.append(DMsg(req.name, self.name))
         
         return res
