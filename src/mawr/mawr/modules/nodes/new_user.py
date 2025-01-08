@@ -35,7 +35,7 @@ class NewUser(Node):
                     "post fix taken. retrying"
                 )
         
-        self.id: int | None = None
+        self.__success: bool | None = None
         
         self.client_register = self.create_client(
             Register, SRV_NAME_REGISTER 
@@ -51,7 +51,7 @@ class NewUser(Node):
         )
 
     def __call_register_done(self, response: Register.Response):
-        self.id = response.id
+        self.__success = response.success
 
     def __wait_for_services(self):
         while not self.client_register.wait_for_service(
@@ -61,14 +61,15 @@ class NewUser(Node):
                 "pending register service ..."
             )
 
-    def register(self, name: str) -> int:
+    def register(self, name: str) -> bool:
+        self.__success = None
         self.__wait_for_services()
         self.get_logger().info("registering ...")
         self.__call_register(name)
-        while self.id is None:
+        while self.__success is None:
             rclpy.spin_once(self, SPIN_TIMEOUT)
         self.get_logger().info("registering successfull")
-        return self.id
+        return self.__success
         
     def kill(self):
         self.destroy_node()
