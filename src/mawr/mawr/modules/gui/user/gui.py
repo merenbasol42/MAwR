@@ -19,7 +19,7 @@ class GUI:
         self.e_play = self.main_page.e_play
 
     def __init_wn(self):
-        self.wn.title = "User" 
+        self.wn.title("New User")  
         self.wn.geometry("400x400")
 
     def __init_components(self):

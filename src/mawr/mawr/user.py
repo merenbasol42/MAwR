@@ -24,14 +24,19 @@ class User:
     def __cb_record(self, target: bool):
         if target:
             print("recording on")
+            self.node.start_record_msg()
         else:
             print("recording off")
+            self.node.stop_record_msg()
+            self.node.send_msg(0, "b")
 
     def __cb_play(self, index: int):
         print(f"played: {index}")
+        self.node.play_msg(index)
 
     def __cb_name_entered(self, name: str):
         self.name = name
+        self.gui.wn.title(name)
         self.__run_node()
         self.gui.switch_page()
 

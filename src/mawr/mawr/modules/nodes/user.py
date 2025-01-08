@@ -26,8 +26,8 @@ class SendCommand:
     Kime göndereliceği ve hangi mesaj gönderileceğini kapsar
     '''
     def __init__(self, to: str, index: int):
-        self.to: str
-        self.index: int
+        self.to: str = to
+        self.index: int = index
 
 class User(Node):
     def __init__(self, name: str):
