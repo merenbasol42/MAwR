@@ -60,7 +60,7 @@ class User(Node):
                 self.receiver_name = req.name
                 res.success = True
                 self.__create_receiver_topic()
-                self.received_msgs.append(DMsg())
+                self.received_msgs.append(DMsg(req.name, self.name))
         
         return res
 
