@@ -14,6 +14,21 @@ class User:
         self.gui.e_name.subscribe(
             self.__cb_name_entered
         )
+        self.gui.e_play.subscribe(
+            self.__cb_play
+        )
+        self.gui.e_record.subscribe(
+            self.__cb_record
+        )
+
+    def __cb_record(self, target: bool):
+        if target:
+            print("recording on")
+        else:
+            print("recording off")
+
+    def __cb_play(self, index: int):
+        print(f"played: {index}")
 
     def __cb_name_entered(self, name: str):
         self.name = name
