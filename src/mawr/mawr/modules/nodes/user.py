@@ -177,7 +177,7 @@ class User(Node):
         self.recorder.stop()
         self.get_logger().info("recording end")
         m = Message()
-        m = self.recorder.get_audio()
+        m.audio = self.recorder.get_audio()
         self.recorded_msgs.append(m)
         self.get_logger().info("record saved")
 
