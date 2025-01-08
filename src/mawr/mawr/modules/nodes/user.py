@@ -107,7 +107,7 @@ class User(Node):
         return self.client_permission.call(
             Permission.Request(
                 name = self.name,
-                target = bool
+                target = target
             )
         ).success 
 
