@@ -25,14 +25,12 @@ class Center(Node):
     def handle_register(self, req: Register.Request, res: Register.Response):
         
         if self.users.count(req.name) > 0:
-            res.id = -1
-            return res
-        
+            res.success = False
         else:
-            res.id = len(self.users)
+            res.success = True
             self.users.append(req.name)
-            return res
 
+        return res
 #
 # Entry Point
 #
