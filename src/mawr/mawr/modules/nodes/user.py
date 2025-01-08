@@ -1,3 +1,5 @@
+import time
+from threading import Thread
 
 import rclpy
 from rclpy.node import Node
@@ -18,6 +20,11 @@ from ..stream import Recorder
 # Logic
 #
 
+class SendCommand:
+    def __init__(self, to: str, index: int):
+        self.to: str
+        self.index: int
+
 class User(Node):
     def __init__(self, name: str):
         self.name = name
@@ -29,11 +36,16 @@ class User(Node):
 
         self.recorder: Recorder = Recorder()
 
+        self.send_cmds: list[SendCommand] = []
+        self.sender_th: Thread | None = None
+
         super().__init__(self.name)
 
         self.create_service(Permission, f"{self.name}/permission", self.__handle_permission)
     
-        self.receiver_sub = None
+        self.subber_receiver = None
+        self.pubber_receiver = None
+        self.client_permission = None
 
     #
     # ROS Messaging
@@ -53,7 +65,7 @@ class User(Node):
                     self.receive_flag = False
                     self.receiver_name = None
                     res.success = True
-                    self.__delete_receiver_topic()
+                    self.__delete_receiver_sub()
 
             else:
              
@@ -76,29 +88,79 @@ class User(Node):
                 self.receive_flag = True
                 self.receiver_name = req.name
                 res.success = True
-                self.__create_receiver_topic(req.name)
+                self.__create_receiver_sub(req.name)
                 self.received_msgs.append(DMsg(req.name, self.name))
         
         return res
+
+    def __call_permission(self, name: str, target: bool):
+        '''Synchronus'''
+        self.get_logger().info("... calling for permission")
+        self.client_permission = self.create_client(
+            Permission, f"{name}/permission"
+        )
+        
+        return self.client_permission.call(
+            Permission.Request(
+                name = self.name,
+                target = bool
+            )
+        ).success 
 
     def __cb_receiver(self, msg: Voice):
         self.received_msgs[-1].add_part(
             list(msg.data)
         )
 
-    def __create_receiver_topic(self, postfix: str):
-        self.receiver_sub = self.create_subscription(
+    def __create_receiver_sub(self, postfix: str):
+        self.subber_receiver = self.create_subscription(
             Voice,
             f"{self.name}/receiver/{postfix}",
-            self.__cb_receiver
+            self.__cb_receiver,
+            10
         )
 
-    def __delete_receiver_topic(self):
-        self.destroy_subscription(self.receiver_sub)
+    def __delete_receiver_sub(self):
+        self.destroy_subscription(self.subber_receiver)
+        self.subber_receiver = None
 
+    def __create_receiver_pub(self, name: str):
+        self.pubber_receiver = self.create_publisher(
+            msg_type = Voice,
+            topic = f"{name}/receiver/{self.name}",
+            qos_profile = 10
+        )
+    
     #
     #
     #
+    
+    def __send(self, index: int, name: str) -> bool:
+        success = self.__call_permission(name, True)
+        if not success:
+            self.get_logger().error(f"permission denied from {name}")
+            self.client_permission.destroy()
+            return False
+        
+        self.__create_receiver_pub(name)
+        m = self.recorded_msgs[index]
+        l = m.diss_assemble(300)
+        for i in l:
+            self.pubber_receiver.publish(
+                Voice(data = i)
+            )
+            time.sleep(0.05)
+
+
+    def __sender_work(self):
+        while rclpy.ok() and len(self.send_cmds):
+            for cmd in self.send_cmds:
+                if self.__send(
+                    index = cmd.index,
+                    name = cmd.to
+                ): self.send_cmds.remove(cmd)
+        
+        self.sender_th = None
 
     def start_record_msg(self):
         self.recorder.start()
@@ -114,9 +176,21 @@ class User(Node):
         self.recorded_msgs.append(m)
         self.get_logger().info("record saved")
 
-    def send_msg(self, index: int):
-        pass
-    
+    def send_msg(self, index: int, name: str):
+        self.send_cmds.append(
+            SendCommand(
+                index = index,
+                to = name
+            )
+        )
+        if self.sender_th is None:
+            self.sender_th = Thread(
+                target = self.__sender_work,
+                daemon = True
+            )
+            self.sender_th.start()
+        
+
     def play_msg(self, index: int):
         pass
 
