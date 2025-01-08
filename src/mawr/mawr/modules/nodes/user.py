@@ -153,14 +153,17 @@ class User(Node):
             self.pubber_receiver.publish(
                 Voice(data = part)
             )
+            self.get_logger().info("... published a part")
             time.sleep(0.05)
         self.get_logger().info(f"... publishing voice end")
         
         self.client_permission.destroy()
         self.client_permission = None
+        success = self.__call_permission(name, False)
+        return success
 
     def __sender_work(self):
-        while rclpy.ok() and len(self.send_cmds):
+        while rclpy.ok() and len(self.send_cmds) > 0:
             for cmd in self.send_cmds:
                 if self.__send(
                     index = cmd.index,
