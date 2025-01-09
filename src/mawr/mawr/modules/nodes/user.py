@@ -185,11 +185,14 @@ class User(Node):
         self.recorded_msgs.append(m)
         self.get_logger().info("record saved")
 
-    def send_msg(self, index: int, name: str):
+        self.player.load(m.audio)
+        self.player.start()
+
+    def send_msg(self, index: int, to: str):
         self.send_cmds.append(
             SendCommand(
                 index = index,
-                to = name
+                to = to
             )
         )
         if self.sender_th is None:
