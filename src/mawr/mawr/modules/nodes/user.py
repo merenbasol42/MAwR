@@ -155,7 +155,7 @@ class User(Node):
             self.pubber_receiver.publish(
                 Voice(data = part)
             )
-            self.get_logger().info("... published a part")
+            self.get_logger().info("... published a frame")
             time.sleep(0.05)
         self.get_logger().info(f"... publishing voice end")
         
