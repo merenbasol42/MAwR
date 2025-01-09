@@ -3,8 +3,9 @@ from commpy.event_pkg import Event
 from commpy.std_ifs.msg import Bool, Int
 
 from .buttons import Buttons
+from ..ipage import IPage
 
-class MainPage(ctk.CTkFrame):
+class MainPage(IPage):
     def __init__(self, master):
         super().__init__(master)
         self.buttons: Buttons = Buttons(self)

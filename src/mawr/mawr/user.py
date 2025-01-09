@@ -1,6 +1,6 @@
 import rclpy
 from threading import Thread
-from .modules.gui.user import GUI
+from mawr_gui.user import GUI
 from .modules.nodes.user import User as Node
 
 class User:

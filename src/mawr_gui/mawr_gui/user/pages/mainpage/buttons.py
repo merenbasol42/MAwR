@@ -2,14 +2,16 @@ import customtkinter as ctk
 from commpy.event_pkg import Event
 from commpy.std_ifs.msg import Bool, Int
 
-class Buttons(ctk.CTkFrame):
+from mguitb import IComponent
+
+class Buttons(IComponent):
     def __init__(self, master):
         super().__init__(master)
         self.record_button: ctk.CTkButton
         self.play_button: ctk.CTkButton
 
-        self.play_state: False
-        self.record_state: False
+        self.play_state: bool = False
+        self.record_state: bool = False
         
         self.e_play: Event[Int] = Event("play", Int)
         self.e_record: Event[Bool] = Event("record", Bool)
