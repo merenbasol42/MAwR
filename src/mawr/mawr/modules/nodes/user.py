@@ -39,6 +39,7 @@ class User(Node):
         self.receiver_name: str = None
 
         self.recorder: Recorder = Recorder()
+        self.player: Player = Player()
 
         self.send_cmds: list[SendCommand] = []
         self.sender_th: Thread | None = None
@@ -199,7 +200,12 @@ class User(Node):
             self.sender_th.start()
         
     def play_msg(self, index: int):
-        pass
+        self.player.load(
+            self.received_msgs[index].audio
+        )
+        self.get_logger().info("message loaded")
+        self.player.start()
+        
 
 #
 # Entry Point
