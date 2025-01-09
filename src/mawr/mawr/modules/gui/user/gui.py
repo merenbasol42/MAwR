@@ -30,11 +30,17 @@ class GUI:
         self.regi_page.insert()
         self.main_page.insert()
 
-        self.regi_page.pack(side='top', expand=True, fill='both')
+        # self.regi_page.pack(side='top', expand=True, fill='both')
+        self.regi_page.grid(row=0, column=0)
+        self.wn.grid_rowconfigure(0, weight=1)
+        self.wn.grid_columnconfigure(0, weight=1)
 
     def switch_page(self):
-        self.regi_page.pack_forget()
-        self.main_page.pack(side='top', expand=True, fill='both')
+        self.regi_page.grid_forget()
+        # self.main_page.pack(side='top', expand=True, fill='both')
+        self.main_page.grid(row=0, column=0)
+        self.wn.grid_rowconfigure(0, weight=1)
+        self.wn.grid_columnconfigure(0, weight=1)
 
     def init(self):
         self.__init_wn()
