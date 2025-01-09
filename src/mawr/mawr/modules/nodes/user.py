@@ -138,7 +138,7 @@ class User(Node):
         )
     
     #
-    #
+    # Main Logic
     #
     
     def __send(self, index: int, name: str) -> bool:
@@ -173,6 +173,10 @@ class User(Node):
                 ): self.send_cmds.remove(cmd)
         
         self.sender_th = None
+
+    #
+    # External  
+    #
 
     def start_record_msg(self):
         self.recorder.start()
