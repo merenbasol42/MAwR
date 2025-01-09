@@ -10,7 +10,7 @@ from mawr_interfaces.srv import Permission
 from ..message import Message
 from ..message import DirectionalMessage as DMsg
 
-from ..stream import Recorder
+from ..stream import Recorder, Player
 
 #
 # Constants

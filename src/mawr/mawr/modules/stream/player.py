@@ -1,4 +1,5 @@
 import time
+from threading import Thread
 import pyaudio
 from queue import Queue
 
@@ -27,7 +28,13 @@ class Player:
         if self.__play_flag:
             self.logger("::ERR:: already loaded an audio")
             return
+        self.__play_flag = True
+        Thread(
+            target = self.__start,
+            daemon = True
+        ).start()
 
+    def __start(self):
         # PyAudio başlatma ve ses çalmak için gerekli parametreler
         p = pyaudio.PyAudio()
 
@@ -42,7 +49,6 @@ class Player:
 
         self.logger("playing has been started")
 
-        self.__play_flag = True
         while self.__play_flag:
             if not self.__queue.empty():
                 data = self.__make_safe(lambda: self.__queue.get())
@@ -57,7 +63,7 @@ class Player:
         stream.close()  # Akışı kapatıyoruz
 
     def __make_safe(self, func):
-        while self.__queue_flag:pass
+        while self.__queue_flag: pass
         self.__queue_flag = True
         res = func()
         self.__queue_flag = False
