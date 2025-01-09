@@ -71,6 +71,7 @@ class User(Node):
                     self.receiver_name = None
                     res.success = True
                     self.__delete_receiver_sub()
+                    self.get_logger().info(f"received {len(self.received_msgs[-1].audio)} frame")
 
             else:
              
@@ -114,7 +115,7 @@ class User(Node):
 
     def __cb_receiver(self, msg: Voice):
         self.received_msgs[-1].add_part(
-            list(msg.data)
+            msg.data
         )
 
     def __create_receiver_sub(self, postfix: str):
