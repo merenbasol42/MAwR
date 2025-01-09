@@ -206,7 +206,6 @@ class User(Node):
         self.get_logger().info("message loaded")
         self.player.start()
         
-
 #
 # Entry Point
 #
