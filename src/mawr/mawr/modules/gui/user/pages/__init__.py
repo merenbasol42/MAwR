@@ -1,2 +1,2 @@
-from .main_page import MainPage
+from .mainpage import MainPage
 from .registiration import RegistirationPage
