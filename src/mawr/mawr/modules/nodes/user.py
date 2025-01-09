@@ -115,7 +115,7 @@ class User(Node):
 
     def __cb_receiver(self, msg: Voice):
         self.received_msgs[-1].add_part(
-            msg.data
+            list(msg.data)
         )
 
     def __create_receiver_sub(self, postfix: str):
